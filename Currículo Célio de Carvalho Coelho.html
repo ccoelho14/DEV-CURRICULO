@@ -1,0 +1,198 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículo Célio de Carvalho Coelho</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            width: 800px;
+            margin: 20px auto;
+            border: 2px solid #000;
+            padding: 20px;
+        }
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .content {
+            display: flex;
+        }
+        .sidebar {
+            width: 30%;
+            background-color: #003087;
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .sidebar h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .sidebar p, .sidebar li {
+            font-size: 12px;
+            margin: 5px 0;
+        }
+        .main {
+            width: 70%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .main h2 {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .main p, .main li {
+            font-size: 12px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            CÉLIO DE CARVALHO COELHO
+        </div>
+        <div class="subtitle">
+            ANALISTA DE SERVICE DESK
+        </div>
+        <div class="content">
+            <div class="sidebar">
+                <h2>CONTATO</h2>
+                <p>Carapicuíba-SP</p>
+                <p><a href="mailto:celiodecarvalho14@hotmail.com" style="color: white;">celiodecarvalho14@hotmail.com</a></p>
+                <p>(11) 96254-9098</p>
+                <p>Recado: (11) 97991-4894 (Josiane esposa)</p>
+                <p><a href="https://www.linkedin.com/in/celio-de-carvalho-coelho-80555233/" style="color: white;">www.linkedin.com/in/celio-de-carvalho-coelho-80555233/</a></p>
+                <h2>HABILIDADES</h2>
+                <ul>
+                    <li>Planejamento analítico</li>
+                    <li>Trabalho em equipe</li>
+                    <li>Conhecimento em Active Directory</li>
+                    <li>Solucionador de problemas</li>
+                    <li>Conhecimento em Office 365</li>
+                    <li>Inglês básico</li>
+                </ul>
+            </div>
+            <div class="main">
+                <h2>PERFIL PESSOAL</h2>
+                <p>Analista de Service Desk com experiência no gerenciamento de acessos e ativos de usuários em AD, service desk DNS, DHCP, políticas de grupo GPO, administração de soluções em Cloud como Microsoft 365 e Azure, monitoramento e gerenciamento de servidores para formação e manutenção de máquinas.</p>
+                
+                <h2>EXPERIÊNCIA DE TRABALHO</h2>
+                <p><strong>Analista de Service Desk</strong><br>Telefônica Tech (Abr. de 2024 – Out. de 2024)</p>
+                <ul>
+                    <li>Criação e gerenciamento de acessos em Active Directory</li>
+                    <li>Gerenciamento de servidores e serviços como criação de DNS, DHCP e GPO’s</li>
+                    <li>Administração de Microsoft 365 e Azure</li>
+                    <li>Ativação de vulnerabilidades via Forticlient – EMS</li>
+                    <li>Restruturação de Rede com foco na virtualização de Ambientes</li>
+                    <li>Monitoramento de equipamentos CrowdStrike</li>
+                </ul>
+                <p><strong>Analista de Suporte Jr.</strong><br>NAVA Technology for Business (Dez. de 2021 – Jan. de 2023)</p>
+                <ul>
+                    <li>Atuação em demandas de chamados remotamente</li>
+                    <li>Service Now</li>
+                    <li>Análise e identificação de falhas em equipamentos e serviços</li>
+                    <li>Manutenção de servidores Linux e Windows</li>
+                </ul>
+                <p><strong>Analista Administrativo</strong><br>WIPRO Technologies (Ago. de 2017 – Jun. de 2023)</p>
+                <ul>
+                    <li>X-BRAIN - Analista de lógica (Jul. de 2021 a Out. de 2022): Acompanhamento de processos gerais, contribuir na escrita das estórias, acompanhar os testes e desenvolvimentos da Squad, auxiliar o PM/PO e o líder de desenvolvimento, documentar todos os processos de criação do projeto.</li>
+                    <li>Desenvolvimento JAVA e Migração: Criação e desenvolvimento em JAVA de telas no projeto TMCT do Bradesco, abertura de requisição de serviços para aplicações no Bradesco Seguros, controle de requisição de serviço em migração de servidores de aplicação no Bradesco Seguros.</li>
+                    <li>Suporte ao SAP a todo América Latina: Realização de auditoria de acesso em ambientes especiais no SAP dos usuários, atualização da conta do usuário SAP, criação de usuário no SAP, desbloquear usuários SAP, suporte técnico no nível de segurança SAP L1 e L1.5, resolução de problemas de nível L1 e L1.5, atendimento telefônico para usuários do SAP.</li>
+                </ul>
+                <p><strong>Assistente Administrativo – Departamento de Suprimentos</strong><br>Europ Assistance Brasil (Fev. de 2016 – Mar. de 2017)</p>
+                <ul>
+                    <li>Tratativas de valores, atendimento aos fornecedores, análise de documentação, análise de risco, cadastros internos de materiais e fornecedores no sistema PIE e SAP – SRM e ECC.</li>
+                </ul>
+                <p><strong>Agente de Atendimento (Sabesp)</strong><br>Associação Amigos Metroviários dos Excepcionais (Dez. de 2015 – Fev. de 2016)</p>
+                <ul>
+                    <li>Negociação de débitos, atendimento ao cliente, análise de faturas, cadastro de clientes.</li>
+                </ul>
+                <p><strong>Assistente Administrativo</strong><br>RRG Construtora Ltda. (Mai. de 2010 – Jun. de 2015)</p>
+                <ul>
+                    <li>Administração de pessoal, controle de estoque, recebimento de fornecedores e notas.</li>
+                </ul>
+                <p><strong>Repositor</strong><br>Wal Mart Brasil LTDA (Out. de 2004 – Jun. de 2005)</p>
+                <p><strong>Ajudante Geral</strong><br>Marcio Batista (Mai. de 2000 – Out. de 2001)</p>
+
+                <h2>HISTÓRICO ACADÊMICO</h2>
+                <p><strong>Universidade Estácio de Sá</strong><br>Graduação em Análise e Desenvolvimento de Sistemas (Jan. de 2021 – Jun. de 2023)</p>
+                <ul>
+                    <li>Conhecimentos básicos em linguagens de programação</li>
+                    <li>Conhecimentos de Sistemas de Rede</li>
+                    <li>Conhecimentos sobre Segurança da Informação</li>
+                    <li>Desenvolvimento de Software</li>
+                </ul>
+                <p><strong>Ensino Médio Completo</strong></p>
+                <p><strong>Curso Técnico</strong></p>
+                <ul>
+                    <li>Técnico em Redes de Computadores (Concluído)</li>
+                    <li>Técnico Administrativo (Concluído)</li>
+                </ul>
+                <p><strong>Cursos Complementares</strong></p>
+                <ul>
+                    <li>Informática básica Pacote Office (Concluído)</li>
+                    <li>Administração e informática básicas (Concluído)</li>
+                    <li>Tecnologia da Informação e Comunicação (Concluído)</li>
+                    <li>SAP – Beginner Training (Concluído)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

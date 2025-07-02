@@ -1,0 +1,224 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+</script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículo Célio de Carvalho Coelho</title>
+    <span style="background-color: yellow;"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></span>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            width: 800px;
+            margin: 20px auto;
+            border: 2px solid #000;
+            padding: 20px;
+        }
+        .title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .content {
+            display: flex;
+        }
+        .sidebar {
+            width: 35%;
+            background-color: #003087;
+            color: white;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .sidebar h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .sidebar p, .sidebar li {
+            font-size: 12px;
+            margin: 5px 0;
+        }
+        .sidebar a {
+    color: #87CEEB;
+    text-decoration: none;
+}
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+        .main {
+            width: 70%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .main h2 {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+}
+        .main p, .main li {
+            font-size: 12px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            CÉLIO DE CARVALHO COELHO
+        </div>
+        <div class="subtitle">
+            Analista Sistemas
+        </div>
+        <div class="content">
+            <div class="sidebar">
+                <h2>CONTATO</h2>
+                <p style="margin: 10px 0;"><span style="margin-right: 5px;">📍</span> Carapicuíba-SP</p>
+                <p style="margin: 10px 0;"><span style="margin-right: 5px;">📧</span> celiodecarvalho14@hotmail.com</p>
+                <p style="margin: 10px 0;"><span style="margin-right: 5px;">📱</span> (11) 96254-9098 (Whatsapp) <span style="background-color: green;"><i class="fab fa-whatsapp icon"></i></span></p>
+                <p style="margin: 10px 0;"><span style="margin-right: 5px;">☎️</span> Recado: (11) 97991-4894 (Josiane)</p>
+                <h2>HABILIDADES</h2>
+                <ul>
+                    <li>Trabalho em equipe</li>
+                    <li>Senso crítico e o senso de urgência</li>
+                    <li>Planejamento analítico</li>
+                    <li>Análise de dados</li>
+                    <li>Solucionador de problemas</li>
+                    <li>Conhecimento em Office 365</li>
+                    <li>Metodologia Ágil e a ITIL</li>
+                    <li>Inglês básico</li>
+                    <li>Espanhol básico</li>
+                </ul>
+                <h2>Redes Sociais</h2>
+                <p style="margin: 5px 0;"><span style="background-color: dark blue;"><i class="fab fa-linkedin icon"></i></span> <a href="https://www.linkedin.com/in/celiodecarvalhocoelho/">linkedin.com/in/celiodecarvalhocoelho/</a></p>
+                <p><i class="fab fa-github icon"></i><a href="https://github.com/ccoelho14" target="_blank">github.com/ccoelho14</a></p>
+
+            </div>
+            <div class="main">
+                <h2>👤PERFIL PESSOAL</h2>
+                <p>Analista de TI com sólida experiência em suporte técnico, administração de sistemas e gestão de infraestrutura. Especialista em gerenciamento de acessos, configuração de perfil e ambientes corporativos, hábil na resolução de problemas e apoio a processos e projetos em andamento garantindo eficiência e conformidade com os SLAs. Destaco-me pelo trabalho em equipe, planejamento e comprometimento com resultados. 
+
+
+                <h2>HISTÓRICO ACADÊMICO</h2>
+<p><strong>Universidade Estácio de Sá</strong><br>Graduação em Análise e Desenvolvimento de Sistemas (Jan. de 2021 – Jun. de 2023)</p>
+<p><strong>Cursos Técnicos</strong></p>
+<ul>
+    <li>Técnico em Redes de Computadores (Concluído)</li>
+    <li>Técnico Administrativo (Concluído)</li>
+</ul>
+<p><strong>Ensino Médio (Completo)</strong></p>
+
+<p><strong>Cursos Complementares</strong></p>
+ 
+                    <li>Huawei HCIA Cloud Services (Concluído)</li>
+                    <li>Cultura e Métodos Ágeis (Concluído)</li>
+                    <li>Modelagem de banco de dados relacional (Concluído)</li>
+                    <li>Gerenciamento de inovação organizacional (Concluído)</li>
+                    <li>Gestão de contratos: dicas e cuidados gerais (Concluído)</li>
+                    <li>Informática básica Pacote Office (Concluído)</li>
+                    <li>Administração e informática básicas (Concluído)</li>
+                    <li>Tecnologia da Informação e Comunicação (Concluído)</li>
+                    <li>SAP – Beginner Training (Concluído)</li>
+                </ul>
+                <h2>EXPERIÊNCIA DE TRABALHO</h2>
+                <p><strong>Analista de Tecnologia da Informação</strong><br>Telefônica Tech (Maio. de 2024 – atual)</p>
+                <ul>
+Gestão:
+
+<li>Atualização de projetos do comitê global da MAPFRE</li>
+<li>Interface com fornecedores internos e externos, assegurando a continuidade dos serviços e cumprimento de SLAs.</li>
+<li>Administração de inventário de equipamentos e acessórios de TI, garantindo rastreabilidade e disponibilidade.</li>
+<li>Acompanhamento de contas e custos relacionados à telefonia móvel e links de dados, com foco em otimização de despesas.</li>
+<li>Responsável pela gestão de linhas móveis corporativas e controle dos dispositivos entregues aos colaboradores.</li>
+
+Suporte Técnico:
+
+<li>Atuação como ponto focal de suporte técnico aos usuários e equipamentos da Operação MAPFRE.</li>
+<li>Entrega e recolhimento de equipamentos na unidade da Berrini para novos colaboradores e desligamentos.</li>
+<li>Apoio ao processo de onboarding e offboarding, garantindo a entrega e devolução adequada dos dispositivos.</li>
+<li>Atendimento e resolução de solicitações e incidentes técnicos, com registro completo no sistema de chamados (abertura, tratativa e encerramento).</li>
+<li>Configuração de equipamentos de rede como roteadores, access points e VPNs.
+<li>Formatação e instalação de sistemas operacionais e softwares corporativos.</li>
+<li>Criação e gerenciamento de acessos em Diretório ativo</li>
+<li>Gerenciamento de serviços e Manutenção de Hardware e Software</li>
+<li>Administração de Microsoft 365 e Azure</li>
+<li>Restruturação de Rede com foco na virtualização de Ambientes</li>
+<li>Monitoramento de equipamentos</li>
+                </ul>
+                <p><strong>Analista Administrativo</strong><br>WIPRO Technologies (Ago. de 2017 – Jun. de 2023)</p>
+                <ul>
+                    <li>X-BRAIN - Analista de lógica (Jul. de 2021 a Out. de 2022): Acompanhamento de processos gerais, contribuir na escrita das estórias, acompanhar os testes e desenvolvimentos da Squad, auxiliar o PM/PO e o líder de desenvolvimento, documentar todos os processos de criação do projeto.</li>
+                    <li>Desenvolvimento JAVA e Migração: Criação e desenvolvimento em JAVA de telas no projeto TMCT do Bradesco, abertura de requisição de serviços para aplicações no Bradesco Seguros, controle de requisição de serviço em migração de servidores de aplicação no Bradesco Seguros.</li>
+                    <li>Suporte ao SAP a todo América Latina: Realização de auditoria de acesso em ambientes especiais no SAP dos usuários, atualização da conta do usuário SAP, criação de usuário no SAP, desbloquear usuários SAP, suporte técnico no nível de segurança SAP L1 e L1.5, resolução de problemas de nível L1 e L1.5, atendimento telefônico para usuários do SAP.</li>
+                </ul>
+                <p><strong>Assistente Administrativo – Departamento de Suprimentos</strong><br>Europ Assistance Brasil (Fev. de 2016 – Mar. de 2017)</p>
+                <ul>
+                    <li>Tratativas de valores, atendimento aos fornecedores, análise de documentação, análise de risco, cadastros internos de materiais e fornecedores no sistema PIE e SAP – SRM e ECC.</li>
+                </ul>
+                <p><strong>Agente de Atendimento (Sabesp)</strong><br>Associação Amigos Metroviários dos Excepcionais (Dez. de 2015 – Fev. de 2016)</p>
+                <ul>
+                    <li>Negociação de débitos, atendimento ao cliente, análise de faturas, cadastro de clientes.</li>
+                </ul>
+                <p><strong>Assistente Administrativo</strong><br>RRG Construtora Ltda. (Mai. de 2010 – Jun. de 2015)</p>
+                <ul>
+                    <li>Administração de pessoal, controle de estoque, recebimento de fornecedores e notas.</li>
+                </ul>
+                <p><strong>Repositor</strong><br>Wal Mart Brasil LTDA (Out. de 2004 – Jun. de 2005)</p>
+                <p><strong>Ajudante Geral</strong><br>Marcio Batista (Mai. de 2000 – Out. de 2001)</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+```
